@@ -26,12 +26,12 @@ namespace ModsPlaygroundCS
             toPowerList.Add(2);
             toPowerList.Add(4);
 
-            //var res = WeightedPowerset(2, toPowerList, new List<List<int>>());
+            //var res = Powerset(2, toPowerList, new List<List<int>>());
              //    for(int i = 0; i< res.Count; i++)
             //     {
           //      Console.WriteLine("Set: " + i + " = " + string.Join(", ", res[i]));
             //      }
-         var newList= WeightedPowerset(2, new List<List<int>>(), new List<int>(), toPowerList);
+         var newList= Powerset(2, new List<List<int>>(), new List<int>(), toPowerList);
          Console.WriteLine(newList.Count);
      /*    for (int i = 0; i < newList.Count; i++) //
          {
@@ -42,7 +42,7 @@ namespace ModsPlaygroundCS
          }*/
         }
 
-        public static List<List<int>> WeightedPowerset(int m, List<List<int>> result, List<int> subset, List<int> OG)
+        public static List<List<int>> Powerset(int m, List<List<int>> result, List<int> subset, List<int> OG)
         {
             if (subset.Count <= m) // collect subset if valid and not already in result
             {
@@ -60,7 +60,7 @@ namespace ModsPlaygroundCS
             List<int> remaining = new List<int>(OG);
             remaining.RemoveAt(0);
             //recursively call the function w/o current integer.
-            var excludedResult = ( WeightedPowerset(m, result,subset, remaining));
+            var excludedResult = ( Powerset(m, result,subset, remaining));
             result.AddRange(excludedResult);
             //case 2: include current
             //consider if adding current to set keeps length less or equal to m.
@@ -68,50 +68,42 @@ namespace ModsPlaygroundCS
             {
                 List<int> include = new List<int>(subset);
                 include.Add(currentSite);
-                var includedResult = WeightedPowerset(m, result, include, remaining);
+                var includedResult = Powerset(m, result, include, remaining);
                 result.AddRange(includedResult);
             }
             //math max/math.min here.
             return result;
         }
-
-        /*
-
-
-        public static List<List<int>> WeightedPowerset(int m, List<int> toPowerList, List<List<int>> result)
+        public static long Piset(int m, int result, List<int> subset, List<int> OG)
         {
-            //quick note: List.addAll = List.addRange.
+            if (subset.Count <= m) // collect subset if valid and not already in result
+            {
+                result += PI(subset);
+            }
+            //why the hell do we have to start with an empty result? I wanna like plot this out with and without because it seems like a cool solution, but I just don't understand it...
+            result = new List<List<int>>();
 
-            //we start with the empty set result, toPowerList should be full before recursive cases.
-            if (toPowerList.Count == 0)
+            if (OG.Count == 0)
             {
                 return result;
             }
-
-            int current = toPowerList[0];
+            int currentSite = OG[0]; //where OG[0] is the current residue. To add or not to add?
             //case 1: exclude current
-            List<int> remaining = new List<int>(toPowerList);
-            remaining.Remove(current);
+            List<int> remaining = new List<int>(OG);
+            remaining.RemoveAt(0);
             //recursively call the function w/o current integer.
-            result.AddRange(WeightedPowerset(m, remaining, result)); //essentially removing from toPowerList
-            //exclude contains all possible sets wherein current is NOT included.
-
+            var excludedResult = (Powerset(m, result, subset, remaining));
+            result.AddRange(excludedResult);
             //case 2: include current
             //consider if adding current to set keeps length less or equal to m.
-            List<int> include = new List<int>(toPowerList);
-            include.Add(current);
-            if (include.Count <= m) //note that the only way to add to empty set 
+            if (subset.Count < m)  // Check if we can add one more element
             {
-                result.AddRange(WeightedPowerset(m, include, result));
-
+                List<int> include = new List<int>(subset);
+                include.Add(currentSite);
+                var includedResult = Powerset(m, result, include, remaining);
+                result.AddRange(includedResult);
             }
-            else
-            {
-                //if the length of the set exceeds m, we need to remove the last element added.
-                include.RemoveAt(include.Count - 1);
-                result.AddRange(WeightedPowerset(m, include, result));
-            }
-
+            //math max/math.min here.
             return result;
         }
         /*
@@ -135,7 +127,7 @@ namespace ModsPlaygroundCS
             List<int> remaining = new List<int>(toPowerList);
             remaining.Remove(current);
             //recursively call the function w/o current integer.
-            var exclude = (WeightedPowerset(m, remaining, result)); //essentially removing from toPowerList
+            var exclude = (Powerset(m, remaining, result)); //essentially removing from toPowerList
             //exclude contains all possible sets wherein current is NOT included.
 
             //case 2: include current
@@ -144,21 +136,21 @@ namespace ModsPlaygroundCS
             include.Add(current);
             if (include.Count <= m) //note that the only way to add to empty set
             {
-                include = (WeightedPowerset(m, toPowerList, include));
+                include = (Powerset(m, toPowerList, include));
 
             }
             else
             {
                 //if the length of the set exceeds m, we need to remove the last element added.
                 include.RemoveAt(include.Count - 1);
-                int other =  (WeightedPowerset(m, include, ));
+                int other =  (Powerset(m, include, ));
             }
 
             return
 
 
 
-
+        */
         public static int PI(List<int> x)
         {
             int product = 1;
@@ -171,6 +163,6 @@ namespace ModsPlaygroundCS
 
             return product;
         }
-    */
+    
     }
 }
