@@ -40,6 +40,8 @@ namespace ModsPlaygroundCS
                     Console.WriteLine();
              }
          }*/
+     var newRes = Piset(m, 1, new List<int>(), toPowerList);
+            Console.WriteLine(newRes);
         }
 
         public static List<List<int>> Powerset(int m, List<List<int>> result, List<int> subset, List<int> OG)
@@ -74,14 +76,13 @@ namespace ModsPlaygroundCS
             //math max/math.min here.
             return result;
         }
-        public static long Piset(int m, int result, List<int> subset, List<int> OG)
+        public static long Piset(int m, long result, List<int> subset, List<int> OG)
         {
             if (subset.Count <= m) // collect subset if valid and not already in result
             {
                 result += PI(subset);
             }
             //why the hell do we have to start with an empty result? I wanna like plot this out with and without because it seems like a cool solution, but I just don't understand it...
-            result = new List<List<int>>();
 
             if (OG.Count == 0)
             {
@@ -92,16 +93,18 @@ namespace ModsPlaygroundCS
             List<int> remaining = new List<int>(OG);
             remaining.RemoveAt(0);
             //recursively call the function w/o current integer.
-            var excludedResult = (Powerset(m, result, subset, remaining));
-            result.AddRange(excludedResult);
+            
+            var excludedResult = (Piset(m,result , subset, remaining));
+            result += excludedResult;
             //case 2: include current
             //consider if adding current to set keeps length less or equal to m.
             if (subset.Count < m)  // Check if we can add one more element
             {
                 List<int> include = new List<int>(subset);
                 include.Add(currentSite);
-                var includedResult = Powerset(m, result, include, remaining);
-                result.AddRange(includedResult);
+                var includedResult = Piset(m, result, include, remaining);
+                result += includedResult;
+              //  result.AddRange(includedResult);
             }
             //math max/math.min here.
             return result;
