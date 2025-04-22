@@ -108,7 +108,7 @@ namespace Program
 
         }
 
-        public static int PI(List<int> x)//The method name has nothing to do with it, apparently uppercase PI is also the viscous stress tensor and I thought that was cool.
+        public static int PI(List<int> x)
         {
             int product = 1;
             //helper method to output a single integer given a list. 
