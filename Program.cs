@@ -25,18 +25,21 @@ namespace ModsPlaygroundCS
             toPowerList.Add(2);
             toPowerList.Add(2);
             toPowerList.Add(4);
-                 //   var res = WeightedPowerset(2, toPowerList, new List<List<int>>());
+
+            //var res = WeightedPowerset(2, toPowerList, new List<List<int>>());
              //    for(int i = 0; i< res.Count; i++)
             //     {
           //      Console.WriteLine("Set: " + i + " = " + string.Join(", ", res[i]));
             //      }
          var newList= WeightedPowerset(2, new List<List<int>>(), new List<int>(), toPowerList);
          Console.WriteLine(newList.Count);
-         
-      //   for (int i = 0; i < newList.Count; i++)
-       //  {
-      //       Console.WriteLine(newList[i]);
-      //   }
+     /*    for (int i = 0; i < newList.Count; i++) //
+         {
+             for (int j = 0; j < newList[i].Count; j++)
+             {
+                    Console.WriteLine();
+             }
+         }*/
         }
 
         public static List<List<int>> WeightedPowerset(int m, List<List<int>> result, List<int> subset, List<int> OG)
