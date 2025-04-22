@@ -41,10 +41,12 @@ namespace ModsPlaygroundCS
 
         public static List<List<int>> WeightedPowerset(int m, List<List<int>> result, List<int> subset, List<int> OG)
         {
-            if (subset.Count <= m && !result.Contains(subset)) // collect subset if valid and not already in result
+            if (subset.Count <= m) // collect subset if valid and not already in result
             {
                 result.Add(new List<int>(subset));
             }
+            //why the hell do we have to start with an empty result? I wanna like plot this out with and without because it seems like a cool solution, but I just don't understand it...
+            result = new List<List<int>>();
 
             if (OG.Count == 0)
             {
@@ -53,23 +55,20 @@ namespace ModsPlaygroundCS
             int currentSite = OG[0]; //where OG[0] is the current residue. To add or not to add?
             //case 1: exclude current
             List<int> remaining = new List<int>(OG);
-            remaining.Remove(currentSite);
+            remaining.RemoveAt(0);
             //recursively call the function w/o current integer.
-            result.AddRange(WeightedPowerset(m, result, subset, remaining)); //essentially removing from toPowerList
-            
-            if(subset.Count+1 >m)
-            {
-                return result;
-            }
+            var excludedResult = ( WeightedPowerset(m, result,subset, remaining));
+            result.AddRange(excludedResult);
             //case 2: include current
             //consider if adding current to set keeps length less or equal to m.
-            List<int> include = new List<int>(subset);
-            include.Add(currentSite);
-            if (include.Count <= m) 
+            if (subset.Count < m)  // Check if we can add one more element
             {
-                result.AddRange(WeightedPowerset(m, result, include, OG));
+                List<int> include = new List<int>(subset);
+                include.Add(currentSite);
+                var includedResult = WeightedPowerset(m, result, include, remaining);
+                result.AddRange(includedResult);
             }
-
+            //math max/math.min here.
             return result;
         }
 
