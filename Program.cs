@@ -27,18 +27,10 @@ namespace ModsPlaygroundCS
             toPowerList.Add(4);
             var newList= Powerset(m, new List<List<int>>(), new List<int>(), toPowerList); 
             Console.WriteLine(newList.Count);
-            for(int i = 0; i< newList.Count; i++) { Console.WriteLine("Set: " + i + " = " + string.Join(", ", newList[i])); } 
+            for(int i = 0; i< newList.Count; i++) { Console.WriteLine("Set: " + i + " = " + string.Join(", ", newList[i])); }
 
-
-
-            /*    for (int i = 0; i < newList.Count; i++) //
-                {
-                    for (int j = 0; j < newList[i].Count; j++)
-                    {
-                           Console.WriteLine();
-                    }
-                }*/ 
-        var newRes = Piset(m, 1, new List<int>(), toPowerList);
+            long result = 0;
+            var newRes = Piset(m, ref result, new List<int>(), toPowerList);
             Console.WriteLine(newRes);
             long sumOfProducts = 0;
             for (int i = 0; i < newList.Count;i++)
@@ -60,7 +52,11 @@ namespace ModsPlaygroundCS
              * until we get to 0, where the running subset is counted. Then consider the list starting with (ALONG THE WAY FROM 3 TO 0) 2 and so on. 
              *
              */
-
+            /* The inspiration for this is factorials. I have to realize that subsets = products, and nothing more. So, Result = pi(subset) + pi(subset_1) + pi(subset_2)]ii
+             * 0 
+             *
+             *
+             */
             if (OG.Count == 0) {
                 if (subset.Count <= m) // collect subset if valid and not already in result. Essentially, what conditions must exist if the subset is valid?
                 { result.Add(new List<int>(subset)); }
@@ -85,15 +81,12 @@ namespace ModsPlaygroundCS
             //math max/math.min here.
             return result;
         }
-        public static long Piset(int m, long result, List<int> subset, List<int> OG)
+        public static long Piset(int m, ref long result, List<int> subset, List<int> OG)
         {
             if (OG.Count == 0)
             {
-                if (subset.Count <= m) // collect subset if valid and not already in result.
-                                       // Essentially, what conditions must exist if the subset is valid?
-                {
-                    result += PI(subset);
-                }
+                if (subset.Count <= m) // collect subset if valid and not already in result. Essentially, what conditions must exist if the subset is valid?
+                { result = result + PI(subset); }
                 return result;
             }
 
@@ -102,7 +95,7 @@ namespace ModsPlaygroundCS
             List<int> remaining = new List<int>(OG);
             remaining.RemoveAt(0);
             //recursively call the function w/o current integer.
-            Piset(m, result, subset, remaining); //var excludedrange = ...
+            Piset(m, ref result, subset, remaining); //var excludedrange = ...
 
             //case 2: include current
             //consider if adding current to set keeps length less or equal to m.
@@ -110,10 +103,11 @@ namespace ModsPlaygroundCS
             {
                 List<int> include = new List<int>(subset);
                 include.Add(currentSite);
-                Piset(m, result, include, remaining);
+                Piset(m, ref result, include, remaining);
             }
             //math max/math.min here.
             return result;
+
         }
         /*
         //can we modify the above slightly to output a list of integers instead? How about just a single integer?
